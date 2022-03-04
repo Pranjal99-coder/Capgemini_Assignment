@@ -1,0 +1,107 @@
+
+
+Pranjal Srivastava
+pranjal.srivastava9901@gmail.com
+
+
+Use HR database for below queries
+1. WAQ to display second highest salary in HR schema.
+
+Solution :    max
+----------
+             17000.00
+             (1 row)
+
+2. WAQ to display name of employee who is earning maximum in his/her department.
+
+select department_id,first_name,salary from employees d where salary = (select max(salary) from employees where department_id = d.department_id);	
+
+
+ department_id | first_name |  salary
+---------------+------------+----------
+            90 | Steven     | 24000.00
+            60 | Alexander  |  9000.00
+           100 | Nancy      | 12000.00
+            30 | Den        | 11000.00
+            50 | Adam       |  8200.00
+            80 | John       | 14000.00
+            10 | Jennifer   |  4400.00
+            20 | Michael    | 13000.00
+            40 | Susan      |  6500.00
+            70 | Hermann    | 10000.00
+           110 | Shelley    | 12000.00
+(11 rows)
+
+
+
+
+3. WAQ to display emplyees count who are working from same location.
+
+postgres=# select l.city, count(*) from employees e,locations l,departments d where e.department_id = d.department_id and d.location_id = l.location_id group by(l.location_id);
+        city         | count
+---------------------+-------
+ Toronto             |     2
+ South San Francisco |    45
+ Oxford              |    34
+ London              |     1
+ Munich              |     1
+ Seattle             |    18
+ Southlake           |     5
+(7 rows)
+
+
+
+4. WAQ to display number of employees joined year wise.
+
+select to_char(hire_date,'yyyy')Joining_year,count(*) from employees group by(to_char(hire_date,'yyyy'));
+
+
+	 joining_year | count
+	--------------+-------
+	 1996         |    10
+ 	 1990         |     1
+ 	 2000         |    11
+ 	 1994         |     7
+	 1987         |     2
+	 1993         |     1
+ 	 1997         |    28
+ 	 1991         |     1
+ 	 1989         |     1
+ 	 1998         |    23
+ 	 1995         |     4
+ 	 1999         |    18
+
+
+5. WAQ to top 2 earning employee name and salary in each department. 
+
+select first_name,salary,department_id from employees e1 where 2>(select count(distinct salary) from employees e2 where e2.salary > e1.salary and e1.department_id = e2.department_id);
+
+
+	 first_name |  salary  | department_id
+	------------+----------+---------------
+ 	Steven     | 24000.00 |            90
+ 	Neena      | 17000.00 |            90
+ 	Lex        | 17000.00 |            90
+ 	Alexander  |  9000.00 |            60
+ 	Bruce      |  6000.00 |            60
+ 	Nancy      | 12000.00 |           100
+ 	Daniel     |  9000.00 |           100
+ 	Den        | 11000.00 |            30
+ 	Alexander  |  3100.00 |            30
+ 	Matthew    |  8000.00 |            50
+ 	Adam       |  8200.00 |            50
+ 	John       | 14000.00 |            80
+ 	Karen      | 13500.00 |            80
+ 	Kimberely  |  7000.00 |
+ 	Jennifer   |  4400.00 |            10
+ 	Michael    | 13000.00 |            20
+ 	Pat        |  6000.00 |            20
+ 	Susan      |  6500.00 |            40
+ 	Hermann    | 10000.00 |            70
+ 	Shelley    | 12000.00 |           110
+ 	William    |  8300.00 |           110
+	(21 rows)
+
+
+
+
